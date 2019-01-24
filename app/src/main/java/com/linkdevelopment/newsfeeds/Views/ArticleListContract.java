@@ -9,16 +9,28 @@ import java.util.List;
  */
 public interface ArticleListContract {
 
+    void loadArticles();
+
     void showArticleList(List<Article> articles);
+
     void openArticleDetails(Article article);
+
     void showError();
+
+
+    void bindNavigationDrawer();
 
     void searchInList(String text);
 
+
     void onExploreClicked();
+
     void onChatClicked();
+
     void onGalleryClicked();
+
     void onWishListClicked();
+
     void onMagazinClicked();
 
 }

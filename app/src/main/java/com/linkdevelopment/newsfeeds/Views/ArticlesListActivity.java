@@ -60,38 +60,22 @@ public class ArticlesListActivity extends AppCompatActivity
         context = this;
         ButterKnife.bind(this);
 
+        articleListViewModel = ViewModelProviders.of(this).get(ArticleListViewModel.class);
+
         setSupportActionBar(toolbar);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        //Navigation Drawer
-        ArrayList<DrawerItem> dataList = new ArrayList<>();
-        dataList.add(new DrawerItem(getString(R.string.explore), R.drawable.ic_explore));
-        dataList.add(new DrawerItem(getString(R.string.live_chat), R.drawable.ic_live));
-        dataList.add(new DrawerItem(getString(R.string.gallery), R.drawable.ic_gallery));
-        dataList.add(new DrawerItem(getString(R.string.wish_list), R.drawable.ic_wishlist));
-        dataList.add(new DrawerItem(getString(R.string.magazine), R.drawable.ic_magazine));
-
-
-        CustomDrawerAdapter drawerAdapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item, dataList);
-        navigationList.setAdapter(drawerAdapter);
-        drawerAdapter.setOnItemClickListener(this);
+        bindNavigationDrawer();
 
         articles = new ArrayList<>();
         mAdapter = new ArticlesAdapter(this, articles, this::openArticleDetails);
         articleRecycler.setAdapter(mAdapter);
-
-        articleListViewModel = ViewModelProviders.of(this).get(ArticleListViewModel.class);
 
         loadArticles();
 
         swipeRefreshLayout.setOnRefreshListener(this::loadArticles);
     }
 
-    private void loadArticles() {
+    @Override
+    public void loadArticles() {
         swipeRefreshLayout.setRefreshing(true);
         articleListViewModel.getArticlesList().observe(this, articles -> {
             swipeRefreshLayout.setRefreshing(false);
@@ -217,6 +201,28 @@ public class ArticlesListActivity extends AppCompatActivity
     @Override
     public void onMagazinClicked() {
         Toast.makeText(this, R.string.magazine, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void bindNavigationDrawer()
+    {
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        //Navigation Drawer
+        ArrayList<DrawerItem> dataList = new ArrayList<>();
+        dataList.add(new DrawerItem(getString(R.string.explore), R.drawable.ic_explore));
+        dataList.add(new DrawerItem(getString(R.string.live_chat), R.drawable.ic_live));
+        dataList.add(new DrawerItem(getString(R.string.gallery), R.drawable.ic_gallery));
+        dataList.add(new DrawerItem(getString(R.string.wish_list), R.drawable.ic_wishlist));
+        dataList.add(new DrawerItem(getString(R.string.magazine), R.drawable.ic_magazine));
+
+
+        CustomDrawerAdapter drawerAdapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item, dataList);
+        navigationList.setAdapter(drawerAdapter);
+        drawerAdapter.setOnItemClickListener(this);
     }
 
     public static void hideKeyboardFrom(Context context, View view) {
