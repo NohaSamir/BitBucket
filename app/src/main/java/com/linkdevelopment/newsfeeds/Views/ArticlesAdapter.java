@@ -87,7 +87,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
             itemView.setOnClickListener(this);
         }
 
-        public void set(Article item) {
+        void set(Article item) {
             //UI setting code
 
             if (!TextUtils.isEmpty(item.getUrlToImage())) {

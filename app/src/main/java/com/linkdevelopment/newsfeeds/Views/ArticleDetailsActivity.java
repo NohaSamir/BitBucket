@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.linkdevelopment.newsfeeds.Network.Models.Article;
 import com.linkdevelopment.newsfeeds.R;
+import com.linkdevelopment.newsfeeds.Utils.Constants;
 import com.linkdevelopment.newsfeeds.Utils.DateUtils;
 
 import butterknife.BindView;
@@ -50,8 +51,8 @@ public class ArticleDetailsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        if (intent.hasExtra(ArticlesListActivity.ARTICLE)) {
-            mArticle = intent.getParcelableExtra(ArticlesListActivity.ARTICLE);
+        if (intent.hasExtra(Constants.ARTICLE)) {
+            mArticle = intent.getParcelableExtra(Constants.ARTICLE);
             bindArticleDetails(mArticle);
         }
     }

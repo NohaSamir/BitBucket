@@ -1,4 +1,4 @@
-package com.linkdevelopment.newsfeeds.Interactor;
+package com.linkdevelopment.newsfeeds.Repository;
 
 import android.arch.lifecycle.LiveData;
 
@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * Created by nsamir on 1/23/2019.
  */
-public interface ArticleNewtworkInteractor {
-
-    LiveData<List<Article>> getArticles();
+public interface ArticlesRepository {
+    LiveData<List<Article>> getArticlesList();
 }

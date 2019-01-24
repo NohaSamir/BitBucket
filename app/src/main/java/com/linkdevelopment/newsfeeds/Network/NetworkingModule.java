@@ -19,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class NetworkingModule {
 
-    public static final String baseUrl = "https://newsapi.org/v1/";
+    private static final String baseUrl = "https://newsapi.org/v1/";
 
     @Singleton
     @Provides

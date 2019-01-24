@@ -7,10 +7,10 @@ import dagger.Provides;
 
 
 @Module
-public class ApplicationModule {
+class ApplicationModule {
 
     @Provides
-    public Context providesContext() {
+    Context providesContext() {
         return NewsFeedsApplication.getInstance();
     }
 }

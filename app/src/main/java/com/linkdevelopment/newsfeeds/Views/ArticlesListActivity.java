@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -18,26 +19,24 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.linkdevelopment.newsfeeds.ArticleListViewModel;
 import com.linkdevelopment.newsfeeds.CustomViews.CustomDrawerAdapter;
 import com.linkdevelopment.newsfeeds.CustomViews.DrawerItem;
 import com.linkdevelopment.newsfeeds.Network.Models.Article;
 import com.linkdevelopment.newsfeeds.R;
+import com.linkdevelopment.newsfeeds.Utils.Constants;
+import com.linkdevelopment.newsfeeds.ViewModel.ArticleListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
 
 public class ArticlesListActivity extends AppCompatActivity
         implements CustomDrawerAdapter.OnItemClickListener {
 
-    public static final String ARTICLE = "article";
+
+    //ToDo:Add interfaces
 
     @BindView(R.id.articleRecycler)
     RecyclerView articleRecycler;
@@ -47,16 +46,15 @@ public class ArticlesListActivity extends AppCompatActivity
     DrawerLayout drawer;
     @BindView(R.id.drawer_list)
     RecyclerView navigationList;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     ArticleListViewModel articleListViewModel;
 
     private SearchView searchView;
     private List<Article> articles;
     private ArticlesAdapter mAdapter;
-    private CompositeDisposable disposable;
     private Context context;
-
-    //ToDo:Swip refresh
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,26 +88,18 @@ public class ArticlesListActivity extends AppCompatActivity
         articleRecycler.setAdapter(mAdapter);
 
         articleListViewModel = ViewModelProviders.of(this).get(ArticleListViewModel.class);
-        disposable = new CompositeDisposable();
-        disposable.add(articleListViewModel.getArticlesList().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<List<Article>>() {
-                    @Override
-                    public void onNext(List<Article> articles) {
 
-                        showArticleList(articles);
-                    }
+        loadArticles();
 
-                    @Override
-                    public void onError(Throwable e) {
-                        showError();
-                    }
+        swipeRefreshLayout.setOnRefreshListener(this::loadArticles);
+    }
 
-                    @Override
-                    public void onComplete() {
-
-                    }
-                }));
+    private void loadArticles() {
+        swipeRefreshLayout.setRefreshing(true);
+        articleListViewModel.getArticlesList().observe(this, articles -> {
+            swipeRefreshLayout.setRefreshing(false);
+            showArticleList(articles);
+        });
     }
 
     @Override
@@ -161,12 +151,6 @@ public class ArticlesListActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        if (disposable != null) disposable.dispose();
-    }
-
-    @Override
     public void onNavigationItemSelected(int position) {
         if (position == 0) {
             onExploreClicked();
@@ -198,7 +182,7 @@ public class ArticlesListActivity extends AppCompatActivity
 
     private void openArticleDetails(Article article) {
         Intent intent = new Intent(this, ArticleDetailsActivity.class);
-        intent.putExtra(ARTICLE, article);
+        intent.putExtra(Constants.ARTICLE, article);
         startActivity(intent);
     }
 
@@ -229,7 +213,6 @@ public class ArticlesListActivity extends AppCompatActivity
     private void onMagazinClicked() {
         Toast.makeText(this, R.string.magazine, Toast.LENGTH_SHORT).show();
     }
-
 
     public static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);

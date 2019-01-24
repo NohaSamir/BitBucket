@@ -1,5 +1,7 @@
 package com.linkdevelopment.newsfeeds.Network;
 
+import android.support.annotation.NonNull;
+
 import java.io.IOException;
 
 import okhttp3.HttpUrl;
@@ -13,13 +15,13 @@ public class QueryParameterInterceptor implements Interceptor {
     private String key;
     private String value;
 
-    public QueryParameterInterceptor(String key, String value) {
+    QueryParameterInterceptor(String key, String value) {
         this.key = key;
         this.value = value;
     }
 
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(@NonNull Chain chain) throws IOException {
         Request original = chain.request();
         HttpUrl originalHttpUrl = original.url();
 

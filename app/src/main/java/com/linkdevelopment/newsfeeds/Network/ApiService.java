@@ -2,7 +2,7 @@ package com.linkdevelopment.newsfeeds.Network;
 
 import com.linkdevelopment.newsfeeds.Network.Models.ArticlesResponse;
 
-import io.reactivex.Single;
+import retrofit2.Call;
 import retrofit2.http.GET;
 
 /**
@@ -10,7 +10,6 @@ import retrofit2.http.GET;
  */
 public interface ApiService {
 
-    //ToDo: save api key
     @GET("articles")
-    Single<ArticlesResponse> getArticles();
+    Call<ArticlesResponse> getArticles();
 }

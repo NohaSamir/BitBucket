@@ -2,8 +2,8 @@ package com.linkdevelopment.newsfeeds.Network;
 
 import com.linkdevelopment.newsfeeds.Interactor.ArticleNewtworkInteractor;
 import com.linkdevelopment.newsfeeds.Interactor.ArticleNewtworkInteractorImpl;
-import com.linkdevelopment.newsfeeds.Repository.ArticlesListRepository;
-import com.linkdevelopment.newsfeeds.Repository.ArticlesListRepositoryImpl;
+import com.linkdevelopment.newsfeeds.Repository.ArticlesRepository;
+import com.linkdevelopment.newsfeeds.Repository.ArticlesRepositoryImpl;
 
 import javax.inject.Singleton;
 
@@ -16,27 +16,13 @@ public class ArticleRepositoryModule {
 
     @Provides
     @Singleton
-    public ArticleNewtworkInteractor provideArticleNetwork(ArticleNewtworkInteractorImpl networkInteractor) {
+    ArticleNewtworkInteractor provideArticleNetwork(ArticleNewtworkInteractorImpl networkInteractor) {
         return networkInteractor;
     }
 
-    //ToDo:
-    /*@Provides
-    @Singleton
-    public ArticleMemoryInteractor provideArticleMemory(ArticleMemoryInteractorImpl memoryInteractor) {
-        return memoryInteractor;
-    }
-
-    @Provides
-    public ArticleDatabaseInteractor provideArticleDatabase(ArticleDatabaseInteractorImpl databaseInteractor) {
-        return databaseInteractor;
-    }*/
-
     @Provides
     @Singleton
-    public ArticlesListRepository provideArticleRepository(ArticleNewtworkInteractor networkInteractor/*,
-                                                           ArticleDatabaseInteractor databaseInteractor,
-                                                           ArticleMemoryInteractor ArticleMemoryInteractor*/) {
-        return new ArticlesListRepositoryImpl( networkInteractor);
+    ArticlesRepository provideArticleRepository(ArticleNewtworkInteractor networkInteractor) {
+        return new ArticlesRepositoryImpl(networkInteractor);
     }
 }
