@@ -33,10 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ArticlesListActivity extends AppCompatActivity
-        implements CustomDrawerAdapter.OnItemClickListener {
-
-
-    //ToDo:Add interfaces
+        implements CustomDrawerAdapter.OnItemClickListener, ArticleListContract {
 
     @BindView(R.id.articleRecycler)
     RecyclerView articleRecycler;
@@ -169,8 +166,8 @@ public class ArticlesListActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);*/
     }
 
-
-    private void showArticleList(List<Article> articles) {
+    @Override
+    public void showArticleList(List<Article> articles) {
 
         if (articles != null) {
             this.articles = articles;
@@ -180,37 +177,45 @@ public class ArticlesListActivity extends AppCompatActivity
             showError();
     }
 
-    private void openArticleDetails(Article article) {
+    @Override
+    public void openArticleDetails(Article article) {
         Intent intent = new Intent(this, ArticleDetailsActivity.class);
         intent.putExtra(Constants.ARTICLE, article);
         startActivity(intent);
     }
 
-    private void showError() {
+    @Override
+    public void showError() {
         Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
     }
 
-    private void searchInList(String text) {
+    @Override
+    public void searchInList(String text) {
         mAdapter.filter(text);
     }
 
-    private void onExploreClicked() {
+    @Override
+    public void onExploreClicked() {
         Toast.makeText(this, R.string.explore, Toast.LENGTH_SHORT).show();
     }
 
-    private void onChatClicked() {
+    @Override
+    public void onChatClicked() {
         Toast.makeText(this, R.string.live_chat, Toast.LENGTH_SHORT).show();
     }
 
-    private void onGalleryClicked() {
+    @Override
+    public void onGalleryClicked() {
         Toast.makeText(this, R.string.gallery, Toast.LENGTH_SHORT).show();
     }
 
-    private void onWishListClicked() {
+    @Override
+    public void onWishListClicked() {
         Toast.makeText(this, R.string.wish_list, Toast.LENGTH_SHORT).show();
     }
 
-    private void onMagazinClicked() {
+    @Override
+    public void onMagazinClicked() {
         Toast.makeText(this, R.string.magazine, Toast.LENGTH_SHORT).show();
     }
 
